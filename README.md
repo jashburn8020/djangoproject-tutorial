@@ -124,7 +124,7 @@
     1.  returning an `HttpResponse` object containing the content for the requested page, or
     2.  raising an exception such as `Http404`
 
-## Templates
+# Templates
 
 -   Your project's `mysite/settings.py` > `TEMPLATES` setting describes how Django will load and render templates
     -   configures a `DjangoTemplates` backend whose `APP_DIRS` option is set to `True`
@@ -139,9 +139,74 @@
         -   by putting those templates inside another directory named for the application itself
 -   See <https://docs.djangoproject.com/en/3.0/topics/templates/>
 
+# URLs
+
+-   Avoid hardcoding URLs in templates by making use of the `name` argument in the `path()` functions in the `polls.urls` module, along with the `{% url %}` template tag
+    -   `polls/urls.py`:
+        -   `path('<int:question_id>/', views.detail, name='detail')`
+    -   `polls/index.html`:
+        -   `<a href="{% url 'detail' question.id %}">{{ question.question_text }}</a>`
+-   Namespace URL names to differentiate URL names between Django apps in a project
+    -   `polls/urls.py`:
+        -   `app_name = 'polls'`
+    -   `polls/index.html`:
+        -   `<a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a>`
+
+# Forms
+
+    <form action="{% url 'polls:vote' question.id %}" method="post">
+    {% csrf_token %}
+    {% for choice in question.choice_set.all %}
+        <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
+        <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
+    {% endfor %}
+    <input type="submit" value="Vote">
+    </form>
+
+-   `question` is passed in through the context in `views.py`
+    -   `render(request, "polls/detail.html", {"question": question})`
+-   `name` of each radio button is `choice`
+-   POST data is `choice=#` where `#` is the ID of the selected choice
+-   Cross-Site Request Forgery protection
+    -   all POST forms that target internal URLs should use the `{% csrf_token %}` template tag
+-   Receiving POST data
+    -   `request.POST['choice']`
+        -   a dictionary-like object that lets you access submitted data by key name
+        -   `request.GET` for accessing GET data in the same way
+    -   return `HttpResponseRedirect` after successfully dealing with POST data
+        -   prevents data from being posted twice if a user hits the Back button
+
+# Generic Views
+
+-   For the common case of basic Web development:
+    -   getting data from the database according to a parameter passed in the URL
+    -   loading a template
+    -   returning the rendered template
+-   General
+    -   view: class-based
+    -   model: `model` attribute
+    -   template: `template_name` attribute
+    -   template context variable: `context_object_name` attribute
+    -   URLconf
+        urlpatterns = [
+            path('', views.IndexView.as_view(), name='index'),
+            path('<int:pk>/', views.DetailView.as_view(), name='detail')
+-   Detail view
+    -   display a detail page for a particular type of object
+    -   URLconf: primary key value captured from the URL to be called `pk`
+    -   template default: `<app name>/<model name>_detail.html`
+    -   context variable default: e.g., `question` if the model is `Question`
+    -   see <https://docs.djangoproject.com/en/3.0/ref/class-based-views/generic-display/#django.views.generic.detail.DetailView>
+-   List view
+    -   display a list of objects
+    -   template default: `<app name>/<model name>_list.html`
+    -   context variable default: e.g., `question_list` if the model is `Question`
+    -   see <https://docs.djangoproject.com/en/3.0/ref/class-based-views/generic-display/#django.views.generic.list.ListView>
+
 # Sources
 
 -   "Writing your first Django app, part 1." <https://docs.djangoproject.com/en/3.0/intro/tutorial01/>.
 -   "Writing your first Django app, part 2." <https://docs.djangoproject.com/en/3.0/intro/tutorial02/>.
 -   "Writing your first Django app, part 3." <https://docs.djangoproject.com/en/3.0/intro/tutorial03/>.
+-   "Writing your first Django app, part 4." <https://docs.djangoproject.com/en/3.0/intro/tutorial04/>.
 -   "django-admin and manage.py." <https://docs.djangoproject.com/en/3.0/ref/django-admin/>.
