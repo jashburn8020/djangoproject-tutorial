@@ -188,9 +188,11 @@
     -   template: `template_name` attribute
     -   template context variable: `context_object_name` attribute
     -   URLconf
+        ```
         urlpatterns = [
             path('', views.IndexView.as_view(), name='index'),
             path('<int:pk>/', views.DetailView.as_view(), name='detail')
+        ```
 -   Detail view
     -   display a detail page for a particular type of object
     -   URLconf: primary key value captured from the URL to be called `pk`
