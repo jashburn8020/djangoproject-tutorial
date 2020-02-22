@@ -1,0 +1,39 @@
+{% comment %}
+The template system uses dot-lookup syntax to access variable attributes. In the
+example of {{ question.question_text }}, first Django does a dictionary lookup on the
+object question. Failing that, it tries an attribute lookup – which works, in this
+case. If attribute lookup had failed, it would’ve tried a list-index lookup.
+- Dictionary lookup: {{ my_dict.key }}
+- Attribute lookup: {{ my_object.attribute }}
+- List-index lookup: {{ my_list.0 }}
+
+Method-calling happens in the {% for %} loop: question.choice_set.all is interpreted as
+the Python code question.choice_set.all(), which returns an iterable of Choice objects
+and is suitable for use in the {% for %} tag.
+
+Since you defined the name argument in the path() functions in the polls.urls module,
+you can remove reliance on specific URL paths defined in your url configurations by
+using the {% url %} template tag.
+{% endcomment %}
+
+<h1>{{ question.question_text }}</h1>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<form action="{% url "polls:vote" question.id %}" method="post">
+{% csrf_token %}
+{% for choice in question.choice_set.all %}
+	<input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
+	<label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
+{% endfor %}
+<input type="submit" value="Vote">
+</form>
+
+{% comment %}
+The value of each radio button is the associated question choice's ID. The name of each
+radio button is "choice". That means, when somebody selects one of the radio buttons
+and submits the form, it'll send the POST data choice=# where # is the ID of the selected choice.
+
+All POST forms that are targeted at internal URLs should use the {% csrf_token %}
+template tag to protect against Cross Site Request Forgeries.
+{% endcomment %}
