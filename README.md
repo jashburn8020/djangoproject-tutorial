@@ -187,12 +187,13 @@
     -   model: `model` attribute
     -   template: `template_name` attribute
     -   template context variable: `context_object_name` attribute
-    -   URLconf
-        ```
-        urlpatterns = [
-            path('', views.IndexView.as_view(), name='index'),
-            path('<int:pk>/', views.DetailView.as_view(), name='detail')
-        ```
+    -   URLconf:
+
+
+    urlpatterns = [
+        path('', views.IndexView.as_view(), name='index'),
+        path('<int:pk>/', views.DetailView.as_view(), name='detail')
+
 -   Detail view
     -   display a detail page for a particular type of object
     -   URLconf: primary key value captured from the URL to be called `pk`
@@ -204,6 +205,18 @@
     -   template default: `<app name>/<model name>_list.html`
     -   context variable default: e.g., `question_list` if the model is `Question`
     -   see <https://docs.djangoproject.com/en/3.0/ref/class-based-views/generic-display/#django.views.generic.list.ListView>
+
+# Testing
+
+-   The testing system will automatically find tests in any file whose name begins with `test`
+-   A special database is created for testing
+    -   reset for each test method
+-   Tests are identified by
+    -   subclass of the `django.test.TestCase` class
+    -   test methods - names begin with `test`
+-   Run tests
+    -   `python manage.py test <app name; optional>`
+-   See <https://docs.djangoproject.com/en/3.0/topics/testing/>
 
 # Sources
 
