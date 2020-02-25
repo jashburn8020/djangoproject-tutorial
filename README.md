@@ -187,13 +187,9 @@
     -   model: `model` attribute
     -   template: `template_name` attribute
     -   template context variable: `context_object_name` attribute
-    -   URLconf:
-
-
-    urlpatterns = [
-        path('', views.IndexView.as_view(), name='index'),
-        path('<int:pk>/', views.DetailView.as_view(), name='detail')
-
+    -   URLconf: `urlpatterns`
+        -   `path('', views.IndexView.as_view(), name='index')`
+        -   `path('<int:pk>/', views.DetailView.as_view(), name='detail')`
 -   Detail view
     -   display a detail page for a particular type of object
     -   URLconf: primary key value captured from the URL to be called `pk`
@@ -217,6 +213,18 @@
 -   Run tests
     -   `python manage.py test <app name; optional>`
 -   See <https://docs.djangoproject.com/en/3.0/topics/testing/>
+-   Good rules-of-thumbs:
+    -   a separate `TestClass` for each model or view
+    -   a separate test method for each set of conditions you want to test
+    -   test method names that describe their function
+-   Django includes `LiveServerTestCase` to facilitate integration with tools like Selenium.
+-   Code coverage
+    -   install Coverage.py
+        -   `pip install coverage`
+    -   run
+        -   `coverage run --source='.' manage.py test`
+    -   report
+        -   `coverage report`
 
 # Sources
 
@@ -224,4 +232,6 @@
 -   "Writing your first Django app, part 2." <https://docs.djangoproject.com/en/3.0/intro/tutorial02/>.
 -   "Writing your first Django app, part 3." <https://docs.djangoproject.com/en/3.0/intro/tutorial03/>.
 -   "Writing your first Django app, part 4." <https://docs.djangoproject.com/en/3.0/intro/tutorial04/>.
+-   "Writing your first Django app, part 5." <https://docs.djangoproject.com/en/3.0/intro/tutorial05/>.
 -   "django-admin and manage.py." <https://docs.djangoproject.com/en/3.0/ref/django-admin/>.
+-   "Advanced testing topics." <https://docs.djangoproject.com/en/3.0/topics/testing/advanced/>.

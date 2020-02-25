@@ -84,6 +84,12 @@ class DetailView(generic.DetailView):
     # (Question), Django is able to determine an appropriate name for the context
     # variable.
 
+    def get_queryset(self):
+        """
+        Excludes any questions that aren't published yet.
+        """
+        return Question.objects.filter(pub_date__lte=timezone.now())
+
 
 def results(request, question_id):
     """Function-based view"""
