@@ -1,8 +1,8 @@
 {% comment %}
 The template system uses dot-lookup syntax to access variable attributes. In the
 example of {{ question.question_text }}, first Django does a dictionary lookup on the
-object question. Failing that, it tries an attribute lookup – which works, in this
-case. If attribute lookup had failed, it would’ve tried a list-index lookup.
+object `question`. Failing that, it tries an attribute lookup – which works, in this
+case. If attribute lookup had failed, it would've tried a list-index lookup.
 - Dictionary lookup: {{ my_dict.key }}
 - Attribute lookup: {{ my_object.attribute }}
 - List-index lookup: {{ my_list.0 }}
@@ -32,7 +32,8 @@ using the {% url %} template tag.
 {% comment %}
 The value of each radio button is the associated question choice's ID. The name of each
 radio button is "choice". That means, when somebody selects one of the radio buttons
-and submits the form, it'll send the POST data choice=# where # is the ID of the selected choice.
+and submits the form, it'll send the POST data choice=# where # is the ID of the
+selected choice.
 
 All POST forms that are targeted at internal URLs should use the {% csrf_token %}
 template tag to protect against Cross Site Request Forgeries.

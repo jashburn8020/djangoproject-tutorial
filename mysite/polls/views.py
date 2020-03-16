@@ -115,7 +115,7 @@ def vote(request, question_id):
         # template name as its second argument and a dictionary as its optional third
         # argument. It returns an HttpResponse object of the given template rendered
         # with the given context.
-        # This loads the template called polls/index.html and passes it a context. The
+        # This loads the template called polls/detail.html and passes it a context. The
         # context is a dictionary mapping template variable names to Python objects.
         return render(
             request,
