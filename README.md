@@ -1,4 +1,23 @@
-# Create a project
+# Writing your first Django app
+
+- [Writing your first Django app](#writing-your-first-django-app)
+  - [Create a project](#create-a-project)
+  - [Run the development server](#run-the-development-server)
+  - [Create an app](#create-an-app)
+  - [Database setup](#database-setup)
+  - [Models and database](#models-and-database)
+  - [Database API](#database-api)
+  - [Django Admin](#django-admin)
+  - [Views](#views)
+  - [Templates](#templates)
+  - [URLs](#urls)
+  - [Forms](#forms)
+  - [Generic Views](#generic-views)
+  - [Testing](#testing)
+  - [Static Files](#static-files)
+  - [Sources](#sources)
+
+## Create a project
 
 - `django-admin startproject mysite`
   - creates a `mysite` directory in your current directory
@@ -12,13 +31,13 @@
   - `mysite/asgi.py`: entry-point for ASGI-compatible web servers
   - `mysite/wsgi.py`: entry-point for WSGI-compatible web servers
 
-# Run the development server
+## Run the development server
 
 - `python manage.py runserver`
 - by default, the runserver command starts the development server on the internal IP at port 8000
 - to change the server's port: `python manage.py runserver 8080`
 
-# Create an app
+## Create an app
 
 - Project
   - a collection of configuration and apps for a particular website
@@ -39,7 +58,7 @@
     - `tests.py`
     - `views.py`
 
-# Database setup
+## Database setup
 
 - `mysite/settings.py` > `DATABASES`
 - For databases other than SQLite:
@@ -55,7 +74,7 @@
   - `python manage.py migrate`
   - `migrate` command looks at the `INSTALLED_APPS` setting and creates any necessary database tables according to the database settings in your `mysite/settings.py` file and the database migrations shipped with the apps
 
-# Models and database
+## Models and database
 
 - Define models in `polls/models.py`
   - allows Django to
@@ -83,14 +102,14 @@
   - make your development easier
   - usable by other developers and in production
 
-# Database API
+## Database API
 
 - Invoke the Python shell
   - `python manage.py shell`
 - Use the database API
   - see <https://docs.djangoproject.com/en/3.0/topics/db/queries/>
 
-# Django Admin
+## Django Admin
 
 - Create an admin user
   - `python manage.py createsuperuser`
@@ -105,7 +124,7 @@
   - automatically generated from the `Question` model
   - different model field types (`DateTimeField`, `CharField`) correspond to the appropriate HTML input widget
 
-# Views
+## Views
 
 - A "type" of Web page that generally serves a specific function and has a specific template
 - Each view is represented by a Python function (or method, in the case of class-based views)
@@ -121,10 +140,10 @@
   - there it matches `<int:question_id>/`, resulting in a call to the `detail()` view
     - `path("<int:question_id>/", views.detail, name="detail")`
 - Each view is responsible for doing one of two things
-  1.  returning an `HttpResponse` object containing the content for the requested page, or
-  2.  raising an exception such as `Http404`
+  1. returning an `HttpResponse` object containing the content for the requested page, or
+  2. raising an exception such as `Http404`
 
-# Templates
+## Templates
 
 - Your project's `mysite/settings.py` > `TEMPLATES` setting describes how Django will load and render templates
   - configures a `DjangoTemplates` backend whose `APP_DIRS` option is set to `True`
@@ -139,7 +158,7 @@
     - by putting those templates inside another directory named for the application itself
 - See <https://docs.djangoproject.com/en/3.0/topics/templates/>
 
-# URLs
+## URLs
 
 - Avoid hardcoding URLs in templates by making use of the `name` argument in the `path()` functions in the `polls.urls` module, along with the `{% url %}` template tag
   - `polls/urls.py`:
@@ -152,7 +171,7 @@
   - `polls/index.html`:
     - `<a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a>`
 
-# Forms
+## Forms
 
 ```
 <form action="{% url 'polls:vote' question.id %}" method="post">
@@ -178,7 +197,7 @@
   - return `HttpResponseRedirect` after successfully dealing with POST data
     - prevents data from being posted twice if a user hits the Back button
 
-# Generic Views
+## Generic Views
 
 - For the common case of basic Web development:
   - getting data from the database according to a parameter passed in the URL
@@ -197,14 +216,16 @@
   - URLconf: primary key value captured from the URL to be called `pk`
   - template default: `<app name>/<model name>_detail.html`
   - context variable default: e.g., `question` if the model is `Question`
+  - see `DetailView` in [`polls/views.py`](mysite/polls/views.py)
   - see <https://docs.djangoproject.com/en/3.0/ref/class-based-views/generic-display/#django.views.generic.detail.DetailView>
 - List view
   - display a list of objects
   - template default: `<app name>/<model name>_list.html`
   - context variable default: e.g., `question_list` if the model is `Question`
+  - see `IndexView` in [`polls/views.py`](mysite/polls/views.py)
   - see <https://docs.djangoproject.com/en/3.0/ref/class-based-views/generic-display/#django.views.generic.list.ListView>
 
-# Testing
+## Testing
 
 - The testing system will automatically find tests in any file whose name begins with `test`
 - A special database is created for testing
@@ -214,6 +235,7 @@
   - test methods - names begin with `test`
 - Run tests
   - `python manage.py test <app name; optional>`
+- See [`polls/tests.py`](mysite/polls/tests.py)
 - See <https://docs.djangoproject.com/en/3.0/topics/testing/>
 - Good rules-of-thumbs:
   - a separate `TestClass` for each model or view
@@ -228,7 +250,7 @@
   - report
     - `coverage report`
 
-# Static Files
+## Static Files
 
 - `django.contrib.staticfiles`: collects static files from each of your applications (and any other places you specify) into a single location that can easily be served in production
 - `STATICFILES_FINDERS` setting
@@ -243,7 +265,7 @@
   - always use relative paths to link your static files between each other, because then you can change `STATIC_URL` (used by the `static` template tag to generate its URLs) without having to modify a bunch of paths in your static files as well
   - e.g., `background: white url("images/background.jpg")`
 
-# Sources
+## Sources
 
 - "Writing your first Django app, part 1." <https://docs.djangoproject.com/en/3.0/intro/tutorial01/>.
 - "Writing your first Django app, part 2." <https://docs.djangoproject.com/en/3.0/intro/tutorial02/>.
