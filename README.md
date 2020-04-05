@@ -281,7 +281,7 @@
   - create a directory called `admin` inside `templates`
   - copy the template `admin/base_site.html` from Django's `django/contrib/admin/templates` into `admin`
     - run `python -c "import django; print(django.__path__)"` to see the location of Django source files
-  - customise `base_site.html`
+  - customise [`base_site.html`](mysite/templates/admin/base_site.html)
   - any of Django's default admin templates can be overridden as above
   - for complex applications that require modification of Djangos standard admin templates
     - modify the _application_'s templates rather than those in the _project_
