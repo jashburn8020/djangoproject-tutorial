@@ -15,6 +15,7 @@
   - [Generic Views](#generic-views)
   - [Testing](#testing)
   - [Static Files](#static-files)
+  - [Customising admin pages](#customising-admin-pages)
   - [Sources](#sources)
 
 ## Create a project
@@ -265,6 +266,27 @@
   - always use relative paths to link your static files between each other, because then you can change `STATIC_URL` (used by the `static` template tag to generate its URLs) without having to modify a bunch of paths in your static files as well
   - e.g., `background: white url("images/background.jpg")`
 
+## Customising admin pages
+
+- Customise the admin form by registering a model (e.g., `Question`) along with a `ModelAdmin` object in [polls/admin.py](mysite/polls/admin.py)
+- Use the `fields` and `fieldsets` options in the `ModelAdmin` object to lay out fields on the admin form
+- Use the `inlines` option to enable editing of related objects (models) on the same page as a parent model
+- Use the `list_display` option to control which fields are displayed on the change list page (i.e., <http://localhost:8000/admin/polls/question/>)
+- Use the `list_filter` option to activate filters in the right sidebar
+- Use the `search_fields` option to add a search box
+- Change lists provide pagination for free - default is to display 100 items per page
+- To customise the admin look and feel
+  - create a `templates` directory in your project directory (i.e., where `manage.py` is located)
+  - in [mysite/settings.py](mysite/mysite/settings.py), add a `DIRS` option in the `TEMPLATES` setting to indicate the directories to check when loading Django templates
+  - create a directory called `admin` inside `templates`
+  - copy the template `admin/base_site.html` from Django's `django/contrib/admin/templates` into `admin`
+    - run `python -c "import django; print(django.__path__)"` to see the location of Django source files
+  - customise `base_site.html`
+  - any of Django's default admin templates can be overridden as above
+  - for complex applications that require modification of Djangos standard admin templates
+    - modify the _application_'s templates rather than those in the _project_
+    - you can include the application in any new project, and it would find the custom templates it needs
+
 ## Sources
 
 - "Writing your first Django app, part 1." <https://docs.djangoproject.com/en/3.0/intro/tutorial01/>.
@@ -273,5 +295,7 @@
 - "Writing your first Django app, part 4." <https://docs.djangoproject.com/en/3.0/intro/tutorial04/>.
 - "Writing your first Django app, part 5." <https://docs.djangoproject.com/en/3.0/intro/tutorial05/>.
 - "Writing your first Django app, part 6." <https://docs.djangoproject.com/en/3.0/intro/tutorial06/>.
+- "Writing your first Django app, part 7." <https://docs.djangoproject.com/en/3.0/intro/tutorial07/>.
 - "django-admin and manage.py." <https://docs.djangoproject.com/en/3.0/ref/django-admin/>.
 - "Advanced testing topics." <https://docs.djangoproject.com/en/3.0/topics/testing/advanced/>.
+- "The Django admin site." <https://docs.djangoproject.com/en/3.0/ref/contrib/admin/>

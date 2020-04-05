@@ -30,6 +30,14 @@ class Question(models.Model):
         now = timezone.now()
         return now - datetime.timedelta(days=1) <= self.pub_date <= now
 
+    # To indicate the method represents the 'pub_date' field, which can then be used for
+    # sorting on the admin page.
+    was_published_recently.admin_order_field = "pub_date"
+    # To display 'on' or 'off' icon instead of True or False on the admin page.
+    was_published_recently.boolean = True
+    # To customise the column's title on the admin page.
+    was_published_recently.short_description = "Published recently?"
+
     def __str__(self):
         """Important to add `__str__()` methods to your models because objects'
         representations are used throughout Django's automatically-generated admin"""
